@@ -1,0 +1,19 @@
+{
+  "name": "e-santa",
+  "version": "1.0.0",
+  "description": "Santa's very own web portal",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thesofakillers/eSanta.git"
+  },
+  "author": "thesofakillers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thesofakillers/eSanta/issues"
+  },
+  "homepage": "https://github.com/thesofakillers/eSanta#readme"
+}
