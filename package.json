@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/thesofakillers/eSanta/issues"
   },
-  "homepage": "https://github.com/thesofakillers/eSanta#readme"
+  "homepage": "https://github.com/thesofakillers/eSanta#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
