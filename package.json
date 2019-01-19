@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/thesofakillers/eSanta#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
