@@ -10,7 +10,7 @@ const routes = Router();
 
 routes.get('/', basicController.getHome);
 routes.get('/people', peopleController.getPeople);
-routes.get('/people/:userid', peopleController.getPerson);
+routes.get('/people/:username', peopleController.getPerson);
 routes.post('/people', peopleController.postPerson);
 
 export default routes;
