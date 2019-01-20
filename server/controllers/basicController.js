@@ -1,9 +1,7 @@
 const basicController = {};
 
-basicController.get = (req, res) => {
-  res.json({
-    message: 'test'
-  });
+basicController.getHome = (req, res) => {
+  res.sendFile('index.html', {root: 'public/'})
 };
 
 export default basicController
