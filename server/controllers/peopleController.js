@@ -29,7 +29,6 @@ peopleController.getPerson = (req, res) => {
   } else { // if it doesn't
     res.status(400).send();
   }
-
 };
 
 
