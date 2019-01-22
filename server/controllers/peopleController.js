@@ -1,4 +1,5 @@
 import people from './../models/people'
+import utils from './../utils'
 
 const peopleController = {};
 
@@ -19,10 +20,10 @@ corresponding to the username requested
 peopleController.getPerson = (req, res) => {
   // parse requested username from RESTful interaction
   const usernameRequested = req.params.username;
+  // get usernames of all those on Santa's list
+  let usernames = utils.getAttributeList(people, 'username');
   // get index of JSON object corresponding to the username
-  var index = people.map(function(d) {
-    return d['username'];
-  }).indexOf(usernameRequested)
+  let index = usernames.indexOf(usernameRequested);
   // check if the username exists
   if (index != -1) { // if it does
     res.status(200)

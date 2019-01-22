@@ -1,4 +1,5 @@
 import wishlists from './../models/wishlists';
+import utils from './../utils'
 
 const wishlistController = {};
 
@@ -19,10 +20,10 @@ corresponding to the username requested
 wishlistController.getWishlist = (req, res) => {
   // parse requested username from RESTful interaction
   const usernameRequested = req.params.username;
+  // get usernames of all those with a wishlist
+  let usernames = utils.getAttributeList(wishlists, 'username');
   // get index of JSON object corresponding to the username
-  var index = wishlists.map(function(d) {
-    return d['username'];
-  }).indexOf(usernameRequested);
+  let index = usernames.indexOf(usernameRequested);
   // check if the user has a wishlist
   if (index != -1) { // if it does
     res.status(200) // status OK
