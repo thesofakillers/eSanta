@@ -3,7 +3,7 @@ import people from './../models/people'
 const peopleController = {};
 
 /*
-controller which returns the JSON array of people registered on the website
+controller which returns the JSON array of people on Santa's list
 */
 peopleController.getPeople = (req, res) => {
   res.status(200)
@@ -32,6 +32,9 @@ peopleController.getPerson = (req, res) => {
 };
 
 
+/*
+controller which adds a person to /people
+*/
 peopleController.postPerson = (req, res) => {
   res.send({
     message: "hello"
