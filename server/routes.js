@@ -2,6 +2,7 @@
 
 //<section>~~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import { Router } from 'express'
+import jwt from 'jsonwebtoken'
 import basicController from './controllers/basicController'
 import peopleController from './controllers/peopleController'
 import wishlistController from './controllers/wishlistController'
@@ -18,5 +19,8 @@ routes.post('/people', peopleController.postPerson);
 routes.post('/wishlists', wishlistController.getWishlists);
 routes.get('/wishlists/:username', wishlistController.getWishlist);
 
+routes.post('/register', registerController.register);
+
+routes.post('/login', loginController.login);
 
 export default routes;
