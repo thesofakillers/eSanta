@@ -4,6 +4,6 @@ var people = [{
   "username": "doctorwhocomposer",
   "forename": "Delia",
   "surname": "Derbyshire"
-}]
+}];
 
-export default people
+export default people;

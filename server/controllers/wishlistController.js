@@ -1,13 +1,13 @@
 const wishlistController = {};
 
-import wishlists from './../models/wishlists'
+import wishlists from './../models/wishlists';
 
 
 /*
 controller which returns the JSON array of wishlists registered on the website
 */
 wishlistController.getWishlists = (req, res) => {
-  res.status(200)
+  res.status(200);
   res.send(wishlists);
 };
 
@@ -21,14 +21,14 @@ wishlistController.getWishlist = (req, res) => {
   // get index of JSON object corresponding to the username
   var index = wishlists.map(function(d) {
     return d['username'];
-  }).indexOf(usernameRequested)
+  }).indexOf(usernameRequested);
   // check if the user has a wishlist
   if (index != -1) { // if it does
-    res.status(200)
-    res.send(wishlists[index]);
+    res.status(200) // status OK
+    res.send(wishlists[index]); // send the user's wishlist
   } else { // if it doesn't
     res.status(400).send();
   }
 };
 
-export default wishlistController
+export default wishlistController;
