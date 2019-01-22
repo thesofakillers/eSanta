@@ -2,6 +2,7 @@ import people from './../models/people'
 
 const peopleController = {};
 
+
 /*
 controller which returns the JSON array of people on Santa's list
 */

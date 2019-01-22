@@ -1,6 +1,6 @@
-const wishlistController = {};
-
 import wishlists from './../models/wishlists';
+
+const wishlistController = {};
 
 
 /*
@@ -10,6 +10,7 @@ wishlistController.getWishlists = (req, res) => {
   res.status(200);
   res.send(wishlists);
 };
+
 
 /*
 controller which returns the JSON object (wishlist) within the wishlists array
