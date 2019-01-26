@@ -1,13 +1,13 @@
 // file for handling routes
 
 //<section>~~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { Router } from 'express'
-import jwt from 'jsonwebtoken'
-import basicController from './controllers/basicController';
-import peopleController from './controllers/peopleController';
-import wishlistController from './controllers/wishlistController';
-import registerController from './controllers/registerController';
-import loginController from './controllers/loginController';
+const Router =require('express');
+const jwt = require('jsonwebtoken');
+const basicController = require('./controllers/basicController');
+const peopleController = require('./controllers/peopleController');
+const wishlistController = require('./controllers/wishlistController');
+const registerController = require('./controllers/registerController');
+const loginController = require('./controllers/loginController');
 //</section> End of imports
 
 const routes = Router();
@@ -25,4 +25,4 @@ routes.post('/register', registerController.register);
 
 routes.post('/login', loginController.login);
 
-export default routes;
+module.exports = routes;

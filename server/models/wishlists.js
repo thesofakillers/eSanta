@@ -5,4 +5,4 @@ var wishlists = [{
   "wishes": ["Telephone Booth", "Signal Generator", "Synthesizer"]
 }];
 
-export default wishlists;
+module.exports = wishlists;

@@ -1,5 +1,5 @@
-import wishlists from './../models/wishlists';
-import utils from './../utils'
+const wishlists = require('./../models/wishlists');
+const utils = require('./../utils');
 
 const wishlistController = {};
 
@@ -33,4 +33,4 @@ wishlistController.getWishlist = (req, res) => {
   };
 };
 
-export default wishlistController;
+module.exports = wishlistController;

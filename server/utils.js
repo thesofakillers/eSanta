@@ -17,4 +17,4 @@ utils.getAttributeList = (jsonArray, attribute) => {
 }
 
 
-export default utils;
+module.exports = utils;

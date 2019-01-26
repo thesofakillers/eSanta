@@ -8,4 +8,4 @@ var users = [{
   'access_token': false
 }];
 
-export default users
+module.exports = users;

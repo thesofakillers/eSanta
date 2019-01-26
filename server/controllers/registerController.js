@@ -1,8 +1,8 @@
 const registerController = {};
 
-import people from './../models/people';
-import users from './../models/users';
-import utils from './../utils';
+const people = require('./../models/people');
+const users = require('./../models/users');
+const utils = require('./../utils');
 
 /*
 controller which returns the JSON array of wishlists registered on the website
@@ -55,4 +55,4 @@ registerController.register = (req, res) => {
 };
 
 
-export default registerController;
+module.exports = registerController;

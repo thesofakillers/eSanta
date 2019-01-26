@@ -6,4 +6,4 @@ var people = [{
   "surname": "Derbyshire"
 }];
 
-export default people;
+module.exports = people;

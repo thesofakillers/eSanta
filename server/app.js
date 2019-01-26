@@ -1,9 +1,9 @@
 //main file
 
 //<section>~~~~~~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import express from 'express';
-import bodyParser from 'body-parser';
-import routes from './routes';
+const express = require('express');
+const bodyParser = require('body-parser');
+const routes = require('./routes');
 //</section> End of Imports
 
 
@@ -17,4 +17,4 @@ app.use('/', routes);
 app.use(express.static('public'));
 
 // export app for other scripts to utilize
-export default app;
+module.exports = app;
