@@ -8,8 +8,7 @@ const peopleController = {};
 controller which returns the JSON array of people on Santa's list
 */
 peopleController.getPeople = (req, res) => {
-  res.status(200)
-  res.send(people);
+  return res.status(200).send(people);;
 };
 
 
@@ -26,21 +25,44 @@ peopleController.getPerson = (req, res) => {
   let index = usernames.indexOf(usernameRequested);
   // check if the username exists
   if (index != -1) { // if it does
-    res.status(200)
-    res.send(people[index]);
+    return res.status(200).send(people[index]);
   } else { // if it doesn't
-    res.status(400).send();
-  }
+    return res.status(400).send();
+  };
 };
 
 
 /*
-controller which adds a person to /people
+controller which allows admins (elves) to add a person to /people (santa's list)
 */
 peopleController.postPerson = (req, res) => {
-  res.send({
-    message: "hello"
-  });
+  // get POSTer's access_token if they have one
+  const isAdmin = req.body.access_token;
+  // check validity of access_token
+  // if the access_token doesn't exist or is not 'concertina'
+  if (isAdmin !== "concertina") {
+    return res.status(403).send("You are not authorized"); // forbid the user from POSTing
+  }
+
+  // let user post otherwise
+
+  // get username admin wants to add to /people
+  const usernameSubmitted = req.body.username;
+  // check whether user is already in /people
+  let indexPeople = utils.getAttributeList(people, 'username').indexOf(usernameSubmitted);
+  if (indexPeople >= 0) { // if this user is already in /people
+    //prevent the addition of this user to /people
+    return res.status(400).send("username exists");
+  } else { // otherwise
+    // add person to /people
+    people.push({
+      'username': usernameSubmitted,
+      'forename': req.body.forename,
+      'surname': req.body.surname
+    });
+    // send OK response to Client
+    return res.status(200).send(people);
+  };
 };
 
 export default peopleController
