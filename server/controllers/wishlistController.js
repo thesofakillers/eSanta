@@ -8,8 +8,7 @@ const wishlistController = {};
 controller which returns the JSON array of wishlists registered on the website
 */
 wishlistController.getWishlists = (req, res) => {
-  res.status(200);
-  res.send(wishlists);
+  return res.status(200).send(wishlists);
 };
 
 
@@ -26,11 +25,12 @@ wishlistController.getWishlist = (req, res) => {
   let index = usernames.indexOf(usernameRequested);
   // check if the user has a wishlist
   if (index != -1) { // if it does
-    res.status(200) // status OK
-    res.send(wishlists[index]); // send the user's wishlist
+    // status OK  + send user wishlist
+    return res.status(200).send(wishlists[index]);
   } else { // if it doesn't
-    res.status(400).send();
-  }
+    // Status server error
+    return res.status(400).send();
+  };
 };
 
 export default wishlistController;

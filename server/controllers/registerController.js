@@ -32,13 +32,13 @@ registerController.register = (req, res) => {
   let indexUsers = utils.getAttributeList(users, 'username').indexOf(usernameSubmitted);
   if (indexUsers >= 0) { // if it's taken
     //prevent the creation of this user
-    res.status(400).send();
+    return res.status(400).send();
   } else { // if it's not taken in /users
     // move on and check if username is taken in /people
     let indexPeople = utils.getAttributeList(people, 'username').indexOf(usernameSubmitted);
     if (indexPeople >= 0) { // if it's taken here
       //prevent the creation of this user
-      res.status(400).send();
+      return res.status(400).send();
     } else {
       // add newly registered user to users
       users.push({
@@ -49,7 +49,7 @@ registerController.register = (req, res) => {
         'admin': adminSubmitted
       });
       // send OK response to Client
-      res.status(200).send();
+      return res.status(200).send();
     };
   };
 };
