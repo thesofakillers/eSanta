@@ -8,15 +8,17 @@ import utils from './../utils';
 controller which returns the JSON array of wishlists registered on the website
 */
 registerController.register = (req, res) => {
+  console.log(users);
   // get data from request body
   const usernameSubmitted = req.body.username;
   const passwordSubmitted = req.body.password;
   const forenameSubmitted = req.body.forename;
   const surnameSubmitted = req.body.surname;
+  const adminSubmitted = req.body.admin;
   /*
   Check if username is taken -- this needs to be checked against
   -users: since this is where a newly registered user will be added to
-  -people:  Because elves have the freedom to add any username to /people,
+  -people:  Because elves have the freedom to add *any* username to /people,
             regardless of whether it exists in /users, there is the possibility
             that the username not taken in /users exists in /people - This will
             cause duplicate issues if the elves decide that they want to place
@@ -43,7 +45,8 @@ registerController.register = (req, res) => {
         'username': usernameSubmitted,
         'forename': forenameSubmitted,
         'surname': surnameSubmitted,
-        'password': passwordSubmitted
+        'password': passwordSubmitted,
+        'admin': adminSubmitted
       });
       // send OK response to Client
       res.status(200).send();
