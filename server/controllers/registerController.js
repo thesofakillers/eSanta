@@ -14,7 +14,7 @@ registerController.register = (req, res) => {
   const passwordSubmitted = req.body.password;
   const forenameSubmitted = req.body.forename;
   const surnameSubmitted = req.body.surname;
-  const adminSubmitted = req.body.admin;
+  const adminSubmitted = req.body.access_token;
   /*
   Check if username is taken -- this needs to be checked against
   -users: since this is where a newly registered user will be added to

@@ -5,7 +5,7 @@ var users = [{
   'forename': 'You',
   'surname': 'Sir',
   'password': '1234',
-  'admin': false
+  'access_token': false
 }];
 
 export default users
