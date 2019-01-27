@@ -37,9 +37,7 @@ controller which allows admins (elves) to add a person to /people (santa's list)
 */
 peopleController.postPerson = (req, res) => {
   // get POSTer's access_token if they have one
-  console.log(req);
   const isAdmin = req.body.access_token;
-  console.log(isAdmin);
   // check validity of access_token
   // if the access_token doesn't exist or is not 'concertina'
   if (isAdmin !== "concertina") {

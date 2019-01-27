@@ -60,7 +60,9 @@ registerController.register = (req, res) => {
             'access_token': adminSubmitted
           });
           // send OK response to Client
-          return res.status(200).send(users);
+          return res.status(200).send({
+            message : 'Successfully Registered'
+          });
         }
       });
     };
