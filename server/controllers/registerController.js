@@ -3,7 +3,7 @@ const registerController = {};
 const people = require('./../models/people');
 const users = require('./../models/users');
 const utils = require('./../utils');
-
+const bcrypt = require('bcrypt');
 /*
 controller which returns the JSON array of wishlists registered on the website
 */
@@ -11,10 +11,7 @@ registerController.register = (req, res) => {
   console.log(users);
   // get data from request body
   const usernameSubmitted = req.body.username;
-  const passwordSubmitted = req.body.password;
-  const forenameSubmitted = req.body.forename;
-  const surnameSubmitted = req.body.surname;
-  const adminSubmitted = req.body.access_token;
+
   /*
   Check if username is taken -- this needs to be checked against
   -users: since this is where a newly registered user will be added to
@@ -40,16 +37,32 @@ registerController.register = (req, res) => {
       //prevent the creation of this user
       return res.status(400).send();
     } else {
-      // add newly registered user to users
-      users.push({
-        'username': usernameSubmitted,
-        'forename': forenameSubmitted,
-        'surname': surnameSubmitted,
-        'password': passwordSubmitted,
-        'admin': adminSubmitted
+      // encrypt password
+      bcrypt.hash(req.body.password, 10, (err, hash) => {
+        // catch errors
+        if (err) {
+          return res.status(500).json({
+            error: err
+          });
+        } else { // in case of no errors
+          // assign hashed password to a constant
+          const passwordSubmitted = hash;
+          // get remaining user attributes
+          const forenameSubmitted = req.body.forename;
+          const surnameSubmitted = req.body.surname;
+          const adminSubmitted = req.body.access_token;
+          // create and add newly registered user to users
+          users.push({
+            'username': usernameSubmitted,
+            'forename': forenameSubmitted,
+            'surname': surnameSubmitted,
+            'password': passwordSubmitted,
+            'access_token': adminSubmitted
+          });
+          // send OK response to Client
+          return res.status(200).send(users);
+        }
       });
-      // send OK response to Client
-      return res.status(200).send();
     };
   };
 };
