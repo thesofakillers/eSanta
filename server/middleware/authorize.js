@@ -5,7 +5,6 @@ module.exports = (req, res, next) => {
   try {
     // parse the token from the headers
     const receivedToken = req.headers.authorization.split(" ")[1];
-    console.log(receivedToken);
     // try to verify token
     const verifiedToken = jwt.verify(receivedToken, process.env.JWT_KEY);
     // set a custom request attribute corresponding to the token
