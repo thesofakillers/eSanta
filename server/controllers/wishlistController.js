@@ -33,4 +33,35 @@ wishlistController.getWishlist = (req, res) => {
   };
 };
 
+/*
+controller which creates a new wishlist for a specific user
+*/
+wishlistController.createWishlist = (req, res) => {
+  // identify who is trying to create a new wishlist
+  const submittingUser = req.jwt.username;
+  // check that they don't already have a wishlist
+  let index = utils.getAttributeList(wishlists, 'username').indexOf(submittingUser);
+  if (indexPeople >= 0) { // if this user already has a wishlist
+    //prevent the addition of this user to /people
+    return res.status(400).send({message:"You already have a wishlist"});
+  } else { // if the user does not have a wishlist
+    // read wishlist sent in from client
+    const submittedWishes = req.body.wishes; // should be list of strings
+    // add wishlist to database
+    wishlists.push({
+      'username': submittingUser,
+      'wishes': submittedWishes
+    });
+    // let user know of success
+    return res.status(200).send({message: "Wishlist created"});
+  };
+};
+
+/*
+controller which edits an existing wishlist for a specific user
+*/
+wishlistController.editWishlist = (req, res) => {
+  return res.status(200).send("TO DO");
+};
+
 module.exports = wishlistController;
