@@ -9,3 +9,17 @@
 .bg-christmas-red {
   background-color: #d42426;
 }
+
+a * {
+  transition: transform .200s ease;
+}
+
+a *:hover {
+  transform: scale(0.95);
+}
+
+
+.logo:hover {
+  text-shadow: 1px 1px 1px #ffffff;
+  transition-duration: 150ms;
+}
