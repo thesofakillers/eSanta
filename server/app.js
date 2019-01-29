@@ -11,6 +11,8 @@ const app = express();
 
 // for parsing POSTed JSON
 app.use(bodyParser.json());
+// for parsing parameters passed in URL
+app.use(bodyParser.urlencoded({extended: false}));
 // utilize routes.js for handling routes
 app.use('/', routes);
 // specify where static files are
