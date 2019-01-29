@@ -2,6 +2,43 @@
   font-family: "Courier";
 }
 
+body {
+  color: #ffffff;
+}
+
+main {
+  -webkit-animation: fadein 2s;
+  /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s;
+  /* Firefox < 16 */
+  -ms-animation: fadein 2s;
+  /* Internet Explorer */
+  -o-animation: fadein 2s;
+  /* Opera < 12.1 */
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.labeled-button p {
+  padding-top: 10px;
+  opacity: 0;
+  transition-duration: 1000ms;
+}
+
+.labeled-button:hover p {
+  opacity: 1;
+  transition-duration: 1000ms;
+}
+
 .bg-christmas-green {
   background-color: #1d8044;
 }
@@ -18,8 +55,12 @@ a *:hover {
   transform: scale(0.95);
 }
 
-
 .logo:hover {
   text-shadow: 1px 1px 1px #ffffff;
   transition-duration: 150ms;
+}
+
+i {
+  font-size: 10vmax;
+  color: white;
 }
