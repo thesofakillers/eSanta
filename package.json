@@ -19,11 +19,11 @@
   "homepage": "https://github.com/thesofakillers/eSanta#readme",
   "dependencies": {
     "bcrypt": "^3.0.3",
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0"
   },
   "devDependencies": {
-    "body-parser": "^1.18.3",
     "jest": "^24.0.0",
     "supertest": "^3.4.2"
   }
