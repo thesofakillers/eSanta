@@ -9,6 +9,7 @@ const wishlistController = require('./controllers/wishlistController');
 const registerController = require('./controllers/registerController');
 const loginController = require('./controllers/loginController');
 const userController = require('./controllers/userController');
+const authorize = require('./middleware/authorize');
 //</section> End of imports
 
 const routes = Router();
@@ -26,11 +27,13 @@ routes.post('/people', peopleController.postPerson);
 // only admin can see all users on website (handled with middleware + internally)
 routes.get('/users', userController.getUsers)
 
-// anyone can get wishlists
-routes.get('/wishlists', wishlistController.getWishlists);
-routes.get('/wishlists/:username', wishlistController.getWishlist);
-// only :username can post to /wishlists/:username (handled with middleware)
-routes.post('/wishlists/:username', wishlistController.createWishlist);
+// Only admin can see all wishlists
+routes.get('/wishlists', authorize, wishlistController.getWishlists);
+// Only username (+admin) can see /wishlists/:username
+routes.get('/wishlists/:username', authorize, wishlistController.getWishlist);
+// only users can post to /wishlists (handled with middleware)
+routes.post('/wishlists', authorize, wishlistController.createWishlist);
+// only username can edit /wishlists/:username (handled with middleware)
 routes.put('/wishlists/:username', wishlistController.editWishlist);
 
 // anyone can try registering
