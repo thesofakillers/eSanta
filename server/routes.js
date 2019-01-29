@@ -34,7 +34,7 @@ routes.get('/wishlists/:username', authorize, wishlistController.getWishlist);
 // only users can post to /wishlists (handled with middleware) ✓
 routes.post('/wishlists', authorize, wishlistController.createWishlist);
 // only username can edit /wishlists/:username (handled with middleware)
-routes.put('/wishlists/:username', wishlistController.editWishlist);
+routes.put('/wishlists/:username', authorize, wishlistController.editWishlist);
 
 // anyone can try registering ✓
 routes.post('/register', registerController.register);
