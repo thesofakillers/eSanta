@@ -29,7 +29,7 @@ routes.get('/users', userController.getUsers)
 
 // Only admin can see all wishlists ✓
 routes.get('/wishlists', authorize, wishlistController.getWishlists);
-// Only username (+admin) can see /wishlists/:username
+// Only username (+admin) can see /wishlists/:username ✓
 routes.get('/wishlists/:username', authorize, wishlistController.getWishlist);
 // only users can post to /wishlists (handled with middleware) ✓
 routes.post('/wishlists', authorize, wishlistController.createWishlist);

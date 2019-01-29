@@ -62,7 +62,7 @@ wishlistController.createWishlist = (req, res) => {
   const submittingUser = req.jwt.username;
   // check that they don't already have a wishlist
   let index = utils.getAttributeList(wishlists, 'username').indexOf(submittingUser);
-  if (indexPeople >= 0) { // if this user already has a wishlist
+  if (index >= 0) { // if this user already has a wishlist
     //prevent the addition of this user to /people
     return res.status(400).send({message:"You already have a wishlist"});
   } else { // if the user does not have a wishlist
