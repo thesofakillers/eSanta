@@ -31,7 +31,8 @@ loginController.login = (req, res) => {
         // create JWT
         const token = jwt.sign(
           {//payload
-            username: loginUser.username
+            username: loginUser.username,
+            access_token: loginUser.access_token
           },
           process.env.JWT_KEY, //key
           { //options

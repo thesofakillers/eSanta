@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 controller which returns the JSON array of wishlists registered on the website
 */
 registerController.register = (req, res) => {
-  console.log(users);
   // get data from request body
   const usernameSubmitted = req.body.username;
 
