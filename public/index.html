@@ -32,8 +32,8 @@
         <!-- Handles placement of extra options into hamburger menu when resizing -->
         <div class="collapse navbar-collapse" id="navbarToggle">
           <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="">Naughty List</a>
-            <a class="nav-item nav-link" href="">Wishlist</a>
+            <div class="nav-item nav-link clickable">Naughty List</div>
+            <div class="nav-item nav-link clickable">Wishlist</div>
           </div>
           <!-- Navbar Right Side -->
           <div class="navbar-nav">
@@ -47,21 +47,21 @@
     <main role="main" class="container-fluid text-center pt-5 mt-5">
 
       <div class="row">
-        <div class="col">
+        <div class="col" id="mainLogo">
           <a href="http://localhost:3000">
-            <img src="images/logo.png" alt="logo" style="width:400px;height:auto;">
+            <img src="images/logo.png" alt="logo" class=icon-button style="width:400px;height:auto;">
           </a>
         </div>
       </div>
 
       <div class="row pt-5">
         <div class="col"></div>
-        <div class="col labeled-button text-center">
-          <a href=""><i class="fas fa-scroll"></i></a>
+        <div class="col labeled-button text-center" id="naughtyList">
+          <i class="fas fa-scroll clickable icon-button"></i>
           <p>The Naughty List</p>
         </div>
-        <div class="col labeled-button text-center">
-          <a href=""><i class="far fa-list-alt"></i></a>
+        <div class="col labeled-button text-center" id="wishlist">
+          <i class="far fa-list-alt clickable icon-button"></i>
           <p>Your Wishlist</p>
         </div>
         <div class="col"></div>

@@ -47,12 +47,16 @@ main {
   background-color: #d42426;
 }
 
-a * {
+.icon-button {
   transition: transform .200s ease;
 }
 
-a *:hover {
+.icon-button:hover {
   transform: scale(0.95);
+}
+
+.clickable:hover{
+  cursor: pointer;
 }
 
 .logo:hover {
