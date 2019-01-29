@@ -6,15 +6,26 @@ const wishlistController = {};
 
 /*
 controller which returns the JSON array of wishlists registered on the website
+only accessible to admin
 */
 wishlistController.getWishlists = (req, res) => {
-  return res.status(200).send(wishlists);
+  // get accessing user's admin status
+  const userAdmin = req.jwt.access_token;
+  // check the status
+  if (userAdmin !== 'concertina'){// if they are not an admin
+    // let them know that they are not authorized to see this
+    return res.status(403).send({message: "You are not authorized"})
+  } else { // if they are an admin
+    // return OK and the wishlists JSON
+    return res.status(200).send(wishlists);
+  };
 };
 
 
 /*
 controller which returns the JSON object (wishlist) within the wishlists array
 corresponding to the username requested
+only accessible by admin or by user if they are requesting their own wishlist
 */
 wishlistController.getWishlist = (req, res) => {
   // parse requested username from RESTful interaction
