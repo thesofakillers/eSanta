@@ -65,3 +65,5 @@ nodemon.json
 
 # for mac
 .DS_Store
+
+boiler.html
