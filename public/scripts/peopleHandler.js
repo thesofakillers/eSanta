@@ -1,11 +1,13 @@
 $(document).ready(function() {
+  // when the naughtyList button or link is clicked
   $(".naughtyList").on('click', function() {
-
+    // send an ajax request to server, asking for /people
     $.ajax({
-      url: '/people',
+      url: '/people', // route being asked
       contentType: 'application/json',
       success: function(response) {
-        var main = $("#mainDynamic");
+        var main = $("#mainDynamic"); // target our main block
+        // reset html to custom table (empty)
         main.html("\
         <div class = 'table-responsive'>\
           <table class='table table-sm table-dark table-striped table-hover'>\
@@ -22,7 +24,9 @@ $(document).ready(function() {
           </table>\
         </div>")
 
+        // assign response to a variable
         var people = response;
+        // populate empty table from above with people in /people
         people.forEach(person => {
           var tableBody = $("#mainDynamic tbody")
           tableBody.append("\
@@ -35,14 +39,19 @@ $(document).ready(function() {
       }
     });
   });
+  // when a particular username is clicked
   $("#mainDynamic").on('click', '.people.model.clickable', function(){
+    // get what username on the table is clicked
     var usernameClicked = $(this).text();
-    console.log(usernameClicked)
+
+    // send ajax request to server, asking for /people:username
     $.ajax({
       url: 'people/'+usernameClicked,
       contentType: 'application/json',
       success: function(response) {
+        // target our main block
         var main = $("#mainDynamic");
+        // set its html content to the person's page
         main.html("\
         <h1> User: <span class = 'people model clickable'>"+ response.username +"</span></h4>\
         <h3 class = 'text-justify'>\
