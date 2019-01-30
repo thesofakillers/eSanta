@@ -1,6 +1,6 @@
 $(document).ready(function() {
   // when the naughtyList button or link is clicked
-  $(".naughtyList").on('click', function() {
+  $('body').on('click', '.naughtyList', function() {
     // send an ajax request to server, asking for /people
     $.ajax({
       url: '/people', // route being asked
@@ -57,9 +57,11 @@ $(document).ready(function() {
         <h3 class = 'text-justify'>\
         Forename: "+ response.forename + " </br>\
         Surname: "+ response.surname + "</br>\
-        <span class = 'wishlists model clickable'> See wishlist </span>\
+        <span class = 'userWishlist wishlists model clickable'> See wishlist </span>\
         </h3 >\
         ")
+        //tying username to wishlist
+        $(".userWishlist").data('username', response.username)
       }
     });
   });
