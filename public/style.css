@@ -37,6 +37,7 @@ main {
 .labeled-button:hover p {
   opacity: 1;
   transition-duration: 1000ms;
+
 }
 
 .bg-christmas-green {
@@ -58,6 +59,10 @@ main {
 
 .clickable:hover{
   cursor: pointer;
+}
+
+td.clickable:hover {
+  text-decoration: underline;
 }
 
 .logo:hover {

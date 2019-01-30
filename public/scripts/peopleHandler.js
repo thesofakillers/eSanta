@@ -27,26 +27,22 @@ $(document).ready(function() {
           var tableBody = $("#mainDynamic tbody")
           tableBody.append("\
           <tr>\
-            <td>" + person.username + "</td>\
+            <td class='clickable'>" + person.username + "</td>\
             <td>" + person.forename + "</td>\
             <td>" + person.surname + "</td>\
           </tr>")
         });
-
-
-
-        // .forEach(function(person) {
-        //   tbodyEl.append('\
-        //                 <tr>\
-        //                     <td class="id">' + product.id + '</td>\
-        //                     <td><input type="text" class="name" value="' + product.name + '"></td>\
-        //                     <td>\
-        //                         <button class="update-button">UPDATE/PUT</button>\
-        //                         <button class="delete-button">DELETE</button>\
-        //                     </td>\
-        //                 </tr>\
-        //             ');
-        // });
+      }
+    });
+  });
+  $("#mainDynamic").on('click', 'td.clickable', function(){
+    var usernameClicked = $(this).text();
+    $.ajax({
+      url: 'people/'+usernameClicked,
+      contentType: 'application/json',
+      success: function(response) {
+        var main = $("#mainDynamic");
+        main.html(usernameClicked)
       }
     });
   });
