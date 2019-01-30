@@ -61,7 +61,7 @@ main {
   cursor: pointer;
 }
 
-td.clickable:hover {
+.model.clickable:hover {
   text-decoration: underline;
 }
 

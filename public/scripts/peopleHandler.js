@@ -27,7 +27,7 @@ $(document).ready(function() {
           var tableBody = $("#mainDynamic tbody")
           tableBody.append("\
           <tr>\
-            <td class='clickable'>" + person.username + "</td>\
+            <td class='people model clickable'>" + person.username + "</td>\
             <td>" + person.forename + "</td>\
             <td>" + person.surname + "</td>\
           </tr>")
@@ -35,14 +35,22 @@ $(document).ready(function() {
       }
     });
   });
-  $("#mainDynamic").on('click', 'td.clickable', function(){
+  $("#mainDynamic").on('click', '.people.model.clickable', function(){
     var usernameClicked = $(this).text();
+    console.log(usernameClicked)
     $.ajax({
       url: 'people/'+usernameClicked,
       contentType: 'application/json',
       success: function(response) {
         var main = $("#mainDynamic");
-        main.html(usernameClicked)
+        main.html("\
+        <h1> User: <span class = 'people model clickable'>"+ response.username +"</span></h4>\
+        <h3 class = 'text-justify'>\
+        Forename: "+ response.forename + " </br>\
+        Surname: "+ response.surname + "</br>\
+        <span class = 'wishlists model clickable'> See wishlist </span>\
+        </h3 >\
+        ")
       }
     });
   });
