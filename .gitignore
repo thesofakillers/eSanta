@@ -62,3 +62,6 @@ typings/
 
 # config file
 nodemon.json
+
+# for mac
+.DS_Store
