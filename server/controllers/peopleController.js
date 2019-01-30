@@ -8,7 +8,7 @@ const peopleController = {};
 controller which returns the JSON array of people on Santa's list
 */
 peopleController.getPeople = (req, res) => {
-  return res.status(200).send(people);;
+  return res.status(200).send(people);
 };
 
 

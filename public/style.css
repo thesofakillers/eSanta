@@ -53,6 +53,7 @@ main {
 
 .icon-button:hover {
   transform: scale(0.95);
+  outline:0;
 }
 
 .clickable:hover{
@@ -67,4 +68,8 @@ main {
 i {
   font-size: 10vmax;
   color: white;
+}
+
+caption{
+  caption-side: top;
 }
