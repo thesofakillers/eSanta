@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $("#naughtyList").on('click', function() {
+  $(".naughtyList").on('click', function() {
 
     $.ajax({
       url: '/people',
