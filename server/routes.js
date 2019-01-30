@@ -9,6 +9,7 @@ const wishlistController = require('./controllers/wishlistController');
 const registerController = require('./controllers/registerController');
 const loginController = require('./controllers/loginController');
 const userController = require('./controllers/userController');
+const authenticationController = require('./controllers/authenticationController');
 const authorize = require('./middleware/authorize');
 //</section> End of imports
 
@@ -42,4 +43,6 @@ routes.post('/register', registerController.register);
 //anyone can try logging in ✓
 routes.post('/login', loginController.login);
 
+//to check whether they are authenticated
+routes.get('/authStatus', authorize, authenticationController.check)
 module.exports = routes;
