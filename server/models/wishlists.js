@@ -2,7 +2,12 @@
 
 var wishlists = [{
   "username": "doctorwhocomposer",
-  "wishes": ["Telephone Booth", "Signal Generator", "Synthesizer"]
+  "wishes": ["Telephone Booth", "Signal Generator",
+    "Synthesizer", "Turntable", "Drum Machine",
+    "Roland TR-808", "Yamaha DX7", "Tape Recorder",
+    "Violin", "Dr. Who Box Set", "K9 model",
+    "Headphones", "Amps"
+  ]
 }];
 
 module.exports = wishlists;
