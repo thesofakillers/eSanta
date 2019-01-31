@@ -82,3 +82,8 @@ caption{
 .nav-item{
   margin-left : 5px;
 }
+
+#tableScroll {
+    max-height: 400px;
+    overflow: scroll;
+}

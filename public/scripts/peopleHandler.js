@@ -11,18 +11,23 @@ $(document).ready(function() {
         main.html("\
         <div class = 'table-responsive'>\
           <table class='table table-sm table-dark table-striped table-hover'>\
-          <caption class='text-white'>Santa's Naughty List</caption>\
+          <caption class='text-white lead'>Santa's Naughty List</caption>\
             <thead>\
               <tr>\
-                <th scope='col'>Username</th>\
-                <th scope='col'>Forename</th>\
-                <th scope='col'>Surname</th>\
+                <th width='34%' scope='col'>Username</th>\
+                <th width='33%' scope='col'>Forename</th>\
+                <th width='33%' scope='col'>Surname</th>\
               </tr>\
             </thead>\
+          </table>\
+        </div>\
+        <div class = 'table-responsive' id='tableScroll'>\
+          <table class='table table-sm table-dark table-striped table-hover'>\
             <tbody>\
             </tbody>\
           </table>\
-        </div>")
+        </div>\
+      ")
 
         // assign response to a variable
         var people = response;
@@ -31,9 +36,9 @@ $(document).ready(function() {
           var tableBody = $("#mainDynamic tbody")
           tableBody.append("\
           <tr>\
-            <td class='people model clickable'>" + person.username + "</td>\
-            <td>" + person.forename + "</td>\
-            <td>" + person.surname + "</td>\
+            <td width='34%' class='people model clickable pl-4 pr-0'>" + person.username + "</td>\
+            <td width='33%'>" + person.forename + "</td>\
+            <td width='33%'>" + person.surname + "</td>\
           </tr>")
         });
       }
@@ -53,7 +58,7 @@ $(document).ready(function() {
         var main = $("#mainDynamic");
         // set its html content to the person's page
         main.html("\
-        <h1> User: <span class = 'people model clickable'>"+ response.username +"</span></h4>\
+        <h1> User: <span class = 'people model clickable'>"+ response.username +"</span></h1>\
         <h3 class = 'text-justify'>\
         Forename: "+ response.forename + " </br>\
         Surname: "+ response.surname + "</br>\
