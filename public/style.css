@@ -87,3 +87,9 @@ caption{
     max-height: 400px;
     overflow: scroll;
 }
+
+ul{
+  overflow: hidden;
+  overflow-y: scroll;
+  max-height: 500px;
+}
