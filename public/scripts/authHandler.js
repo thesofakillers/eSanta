@@ -124,7 +124,13 @@ function handleRegisterForm(mainEl, errorBoolean) {
   });
 }
 
+/*
+  Handles the rendering of the Login form and parses the inputted data to
+  server.
+  Will also redirect user depending on success or failure
+*/
 function handleLoginForm(mainEl, fromRegister, fromFailure){
+  // render login form
   mainEl.html("\
   <form id='loginSubmit'>\
     <div class='form-group pt-3'>\
@@ -138,6 +144,7 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
   </form>\
   ");
 
+  // add succesful registration message if user reached page from /register
   if (fromRegister){
     mainEl.prepend("\
     <div class='alert alert-success alert-dismissible fade show' role='alert'>\
@@ -148,6 +155,8 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
     </div>\
     ")
   };
+
+  // add error message if the user credentials are invalid
   if (fromFailure){
     mainEl.prepend("\
     <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
@@ -159,13 +168,16 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
     ")
   };
 
+  // handle form submission
   mainEl.on('submit', '#loginSubmit', function(){
-    // prevemt page reload
+    // prevent page reload
     event.preventDefault();
 
+    // parse entered data
     var usernameSubmitted = $('#Username').val()
     var passwordSubmitted = $('#Password').val()
 
+    // send AJAX POST request
     $.ajax({
       url: "/login",
       method: "POST",
@@ -175,12 +187,17 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
         password: passwordSubmitted
       }),
       statusCode:{
+        // handles succesful login
         200: function(response){
           console.log(response.message);
+          //store JWT token received from server
           localStorage.setItem('Authorization', ('Bearer '+response.token))
+          // render logout rather than login/register
           var token = localStorage.getItem('Authorization')
           checkIfLoggedIn(token);
+          // render home page
           $('.logo.clickable').trigger('click')
+          // give login success message
           mainEl.prepend("\
           <div class='alert alert-success alert-dismissible fade show' role='alert'>\
             You are now logged in.\
@@ -191,6 +208,8 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
           ")
         },
         400: function(){
+          // in case of error
+          // let user try again
           handleLoginForm(mainEl, false, true);
         }
       }
@@ -198,8 +217,23 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
   });
 }
 
-function logout(){
-  // TODO
+/*
+  Allows user to logout and renders appropriate page
+*/
+function logout(mainEl){
+  // remove JWT token
+  localStorage.removeItem('Authorization');
+  // load home page
+  $('.logo.clickable').trigger('click')
+  // let user know they are no longer logged in
+  mainEl.prepend("\
+  <div class='alert alert-info alert-dismissible fade show' role='alert'>\
+    You are no longer logged-in.\
+    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+      <span aria-hidden='true'>&times;</span>\
+    </button>\
+  </div>\
+  ")
 }
 
 $(document).ready(function() {
@@ -215,14 +249,14 @@ $(document).ready(function() {
     handleRegisterForm(main, false);
   });
 
-  // handle logging in TODO
+  // handle logging in
   authAreaEl.on('click', '.clickable#loginPointer', function() {
     handleLoginForm(main, false, false)
   });
 
-  // handle logging out TODO
+  // handle logging out
   authAreaEl.on('click', '.clickable#logoutPointer', function() {
-    logout()
+    logout(main)
     switchLogIOButtons(false, authAreaEl);
   });
 
