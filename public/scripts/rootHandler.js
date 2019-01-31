@@ -6,8 +6,8 @@ $(document).ready(function() {
           <i class='fas fa-scroll clickable icon-button'></i>\
           <p>The Naughty List</p>\
         </div>\
-        <div class='col labeled-button text-center ownWishlist'>\
-          <i class='far fa-list-alt clickable icon-button'></i>\
+        <div class='col labeled-button text-center'>\
+          <i class='far fa-list-alt clickable ownWishlist icon-button'></i>\
           <p>Your Wishlist</p>\
         </div>\
       </div>\

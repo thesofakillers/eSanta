@@ -33,7 +33,7 @@
       <div class="collapse navbar-collapse" id="navbarToggle">
         <div class="navbar-nav mr-auto">
           <div class="nav-item nav-link clickable naughtyList">Naughty List</div>
-          <div class="nav-item nav-link clickable">Wishlist</div>
+          <div class="nav-item nav-link clickable ownWishlist">Wishlist</div>
         </div>
         <!-- Navbar Right Side -->
         <div class="navbar-nav" id ="authArea">
@@ -53,27 +53,7 @@
     <div class="row pt-5">
       <div class="col"></div>
       <div class="col-xs-10 col-sm-8 col-md-6 col-lg-6 col-xl-6" id=mainDynamic>
-        <div class="row">
-          <div class="col labeled-button text-center naughtyList">
-            <i class="fas fa-scroll clickable icon-button"></i>
-            <p>The Naughty List</p>
-          </div>
-          <div class="col labeled-button text-center ownWishlist">
-            <i class="far fa-list-alt clickable icon-button"></i>
-            <p>Your Wishlist</p>
-          </div>
-        </div>
-
-        <div class="row pt-4">
-            <div class="col-1"></div>
-            <div class="col text-justify lead">
-              Ho ho ho! It's about time! Santa has finally modernized and hit the web.
-              Register now to create and edit your very own Christmas wishlist so
-              that Santa and his elves can easily have access to it.
-              Be careful though...you may be on the naughty list.
-            </div>
-            <div class="col-1"></div>
-        </div>
+        Click on Santa!
       </div>
 
       <div class="col"></div>
@@ -85,6 +65,7 @@
   <!-- jquery -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <!-- custom scripts -->
+  <script type="text/javascript" src="scripts/jwt-decode.js"></script>
   <script type="text/javascript" src="scripts/rootHandler.js"></script>
   <script type="text/javascript" src="scripts/authHandler.js"></script>
   <script type="text/javascript" src="scripts/peopleHandler.js"></script>
