@@ -1,7 +1,6 @@
 $(document).ready(function() {
-  var currToken = JSON.parse(localStorage.getItem('Authorization'))
-
   $("#mainDynamic").on('click', ".userWishlist.clickable", function(){
+    var currToken = localStorage.getItem('Authorization')
     var userRequested = $(this).data('username')
     $.ajax({
       url: "/wishlists/" + userRequested,
