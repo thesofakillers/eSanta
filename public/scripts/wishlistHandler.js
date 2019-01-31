@@ -1,6 +1,13 @@
+function createWishlist(mainEl, username){
+  //TO DO
+}
+
+
+
 $(document).ready(function() {
 
   main = $("#mainDynamic")
+  body = $('body')
   main.on('click', ".userWishlist.clickable", function(){
     var currToken = localStorage.getItem('Authorization')
     var userRequested = $(this).data('username')
@@ -22,11 +29,10 @@ $(document).ready(function() {
     })
   });
 
-  main.on('click', ".clickable.ownWishlist", function(){
+  body.on('click', ".clickable.ownWishlist", function(){
     var currToken = localStorage.getItem('Authorization')
     var decodedCurrToken = jwt_decode(currToken.split(' ')[1]);
     var currentUser = decodedCurrToken.username
-    console.log(currentUser)
     $.ajax({
       url: "/wishlists/" + currentUser,
       contentType: 'application/json',
@@ -46,7 +52,7 @@ $(document).ready(function() {
           ")
         },
         400: function(response){
-          createWishlist(currentUser)
+          createWishlist(main, currentUser)
         },
         200: function(response){
           console.log(response.message)

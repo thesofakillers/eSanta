@@ -13,6 +13,7 @@ function checkIfLoggedIn(JWTObject) {
     statusCode: {
       403: function() {
         switchLogIOButtons(false, authAreaEl)
+        localStorage.setItem('loggedIn', false);
       },
       200: function() {
         switchLogIOButtons(true, authAreaEl)
@@ -192,6 +193,8 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
           console.log(response.message);
           //store JWT token received from server
           localStorage.setItem('Authorization', ('Bearer '+response.token))
+          //set loggedIn boolean in system
+          localStorage.setItem('loggedIn', true);
           // render logout rather than login/register
           var token = localStorage.getItem('Authorization')
           checkIfLoggedIn(token);
@@ -223,6 +226,8 @@ function handleLoginForm(mainEl, fromRegister, fromFailure){
 function logout(mainEl){
   // remove JWT token
   localStorage.removeItem('Authorization');
+  // remove loggedIn boolean from storage
+  localStorage.removeItem('loggedIn');
   // load home page
   $('.logo.clickable').trigger('click')
   // let user know they are no longer logged in

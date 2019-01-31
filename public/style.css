@@ -78,3 +78,7 @@ i {
 caption{
   caption-side: top;
 }
+
+.nav-item{
+  margin-left : 5px;
+}
