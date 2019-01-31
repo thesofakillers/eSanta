@@ -8,7 +8,7 @@ function checkIfLoggedIn(JWTObject) {
     url: '/authStatus',
     contentType: 'application/json',
     headers: {
-      Authorization: JWTObject
+      Authorization : JWTObject
     },
     statusCode: {
       403: function() {
@@ -76,9 +76,14 @@ function handleRegisterForm(mainEl, errorBoolean) {
   </form>\
     ")
   if (errorBoolean) {
-    mainEl.append("\
-    <p class='alert alert-danger text-justify'>There was an error.\
-    The username submitted may be already taken<p>")
+    mainEl.prepend("\
+    <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
+      There was an error. The username submitted may be already taken\
+      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+        <span aria-hidden='true'>&times;</span>\
+      </button>\
+    </div>\
+    ")
   }
   mainEl.on('submit', '#registerSubmit', function() {
     // prevemt page reload
@@ -120,7 +125,77 @@ function handleRegisterForm(mainEl, errorBoolean) {
 }
 
 function handleLoginForm(mainEl, fromRegister, fromFailure){
-  //TODO
+  mainEl.html("\
+  <form id='loginSubmit'>\
+    <div class='form-group pt-3'>\
+      <label for='Username'>Username</label>\
+      <input type='text' class='form-control' id='Username' placeholder='username' required>\
+    <div class='form-group pt-3'>\
+        <label for='Password'>Password</label>\
+        <input type='password' class='form-control' id='Password' placeholder='password' required>\
+    </div>\
+    <button class='btn btn-primary type='submit'>Login</button>\
+  </form>\
+  ");
+
+  if (fromRegister){
+    mainEl.prepend("\
+    <div class='alert alert-success alert-dismissible fade show' role='alert'>\
+      Succesfully registered. Feel free to sign in\
+      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+        <span aria-hidden='true'>&times;</span>\
+      </button>\
+    </div>\
+    ")
+  };
+  if (fromFailure){
+    mainEl.prepend("\
+    <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
+      There was an error logging you in. Please check your credentials\
+      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+        <span aria-hidden='true'>&times;</span>\
+      </button>\
+    </div>\
+    ")
+  };
+
+  mainEl.on('submit', '#loginSubmit', function(){
+    // prevemt page reload
+    event.preventDefault();
+
+    var usernameSubmitted = $('#Username').val()
+    var passwordSubmitted = $('#Password').val()
+
+    $.ajax({
+      url: "/login",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({
+        username: usernameSubmitted,
+        password: passwordSubmitted
+      }),
+      statusCode:{
+        200: function(response){
+          console.log(response.message);
+          localStorage.setItem('Authorization', ('Bearer '+response.token))
+          var token = localStorage.getItem('Authorization')
+          checkIfLoggedIn(token);
+          $('.logo.clickable').trigger('click')
+          mainEl.prepend("\
+          <div class='alert alert-success alert-dismissible fade show' role='alert'>\
+            You are now logged in.\
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+              <span aria-hidden='true'>&times;</span>\
+            </button>\
+          </div>\
+          ")
+        },
+        400: function(){
+          handleLoginForm(mainEl, false, true);
+        }
+      }
+    });
+  });
 }
 
 function logout(){
@@ -129,7 +204,7 @@ function logout(){
 
 $(document).ready(function() {
   // get current jwt
-  var currToken = JSON.parse(localStorage.getItem('Authorization'))
+  var currToken = localStorage.getItem('Authorization')
   // check if user logged in, get navbar area,
   // render the correct buttons depending on whether user is logged in or not
   var authAreaEl = checkIfLoggedIn(currToken)
@@ -143,7 +218,6 @@ $(document).ready(function() {
   // handle logging in TODO
   authAreaEl.on('click', '.clickable#loginPointer', function() {
     handleLoginForm(main, false, false)
-    switchLogIOButtons(true, authAreaEl);
   });
 
   // handle logging out TODO
