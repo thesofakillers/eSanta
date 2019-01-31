@@ -17,7 +17,7 @@ $(document).ready(function() {
           elves are allowed access.</p>")
         }
       },
-      success : function(response){console.log("yay")}
+      success : function(response){console.log(response)}
     })
   });
 
