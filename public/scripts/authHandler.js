@@ -1,8 +1,9 @@
 /*
   Given the current JWTObject, checks whether the user is logged in
-  Returns boolean describing outcome of this check
+  Renders the Login/Register/Logout area accordingly
 */
 function checkIfLoggedIn(JWTObject) {
+  var authAreaEl = $("#authArea");
   $.ajax({
     url: '/authStatus',
     contentType: 'application/json',
@@ -11,19 +12,14 @@ function checkIfLoggedIn(JWTObject) {
     },
     statusCode: {
       403: function() {
-        localStorage.setItem('LoggedIn', 'false')
+        switchLogIOButtons(false, authAreaEl)
       },
       200: function() {
-        localStorage.setItem('LoggedIn', 'true')
+        switchLogIOButtons(true, authAreaEl)
       }
     }
   });
-  var loggedInBool = localStorage.getItem('LoggedIn');
-  if (loggedInBool === 'true'){
-    return true
-  } else {
-    return false
-  };
+  return authAreaEl;
 }
 
 /*
@@ -33,7 +29,7 @@ function checkIfLoggedIn(JWTObject) {
 function switchLogIOButtons(loggedInBool, navbarEl) {
   if (loggedInBool) {
     navbarEl.html("\
-    <span class='clickable nav-item nav-link' id = 'loginPointer'>Logout</span>\
+    <span class='clickable nav-item nav-link' id = 'logoutPointer'>Logout</span>\
     ");
   } else {
     navbarEl.html("\
@@ -48,9 +44,8 @@ function switchLogIOButtons(loggedInBool, navbarEl) {
   server.
   Will also redirect user depending on success or failure
 */
-function handleRegisterForm(errorBoolean) {
-  var main = $("#mainDynamic");
-  main.html("\
+function handleRegisterForm(mainEl, errorBoolean) {
+  mainEl.html("\
     <form id='registerSubmit'>\
     <div class='form-row'>\
       <div class='col'>\
@@ -81,11 +76,11 @@ function handleRegisterForm(errorBoolean) {
   </form>\
     ")
   if (errorBoolean) {
-    main.append("\
+    mainEl.append("\
     <p class='alert alert-danger text-justify'>There was an error.\
     The username submitted may be already taken<p>")
   }
-  main.on('submit', '#registerSubmit', function() {
+  mainEl.on('submit', '#registerSubmit', function() {
     // prevemt page reload
     event.preventDefault();
     // parse form
@@ -107,14 +102,14 @@ function handleRegisterForm(errorBoolean) {
         access_token: admin
       }),
       statusCode: {
-        200: function() {
-          handleLoginForm(true, false)
+        200: function(response) {
+          handleLoginForm(mainEl, true, false)
         },
         400: function() {
-          handleRegisterForm(true);
+          handleRegisterForm(mainEl, true);
         },
         500: function() {
-          $("#mainDynamic").html("\
+          mainEl.html("\
           <h1>Internal Server Error</h1>\
           <p class='text-justify pt-3'>There was an error encrypting your \
           password, please try again later</p>")
@@ -124,7 +119,7 @@ function handleRegisterForm(errorBoolean) {
   });
 }
 
-function handleLoginForm(fromRegister, fromFailure){
+function handleLoginForm(mainEl, fromRegister, fromFailure){
   //TODO
 }
 
@@ -135,28 +130,26 @@ function logout(){
 $(document).ready(function() {
   // get current jwt
   var currToken = JSON.parse(localStorage.getItem('Authorization'))
-  // check if user logged in
-  var loggedIn = checkIfLoggedIn(currToken)
-  // get navbar authentication area
-  var authAreaEl = $("#authArea");
+  // check if user logged in, get navbar area,
   // render the correct buttons depending on whether user is logged in or not
-  switchLogIOButtons(loggedIn, authAreaEl);
+  var authAreaEl = checkIfLoggedIn(currToken)
 
+  var main = $("#mainDynamic");
   // handle registering
   authAreaEl.on('click', '.clickable#registerPointer', function() {
-    handleRegisterForm(false);
+    handleRegisterForm(main, false);
   });
 
   // handle logging in TODO
   authAreaEl.on('click', '.clickable#loginPointer', function() {
-    handleLoginForm(false, false)
-    switchLogIOButtons(loggedIn, authAreaEl);
+    handleLoginForm(main, false, false)
+    switchLogIOButtons(true, authAreaEl);
   });
 
   // handle logging out TODO
   authAreaEl.on('click', '.clickable#logoutPointer', function() {
-    loggedIn = logout()
-    switchLogIOButtons(loggedIn, authAreaEl);
+    logout()
+    switchLogIOButtons(false, authAreaEl);
   });
 
 });
