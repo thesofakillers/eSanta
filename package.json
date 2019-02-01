@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node server/index.js"
+    "start": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,6 @@
     "jest": "^24.0.0",
     "jsonwebtoken": "^8.4.0",
     "supertest": "^3.4.2"
-  },
-  "engines": {
-    "node": "11.8.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
