@@ -93,3 +93,7 @@ ul{
   overflow-y: scroll;
   max-height: 500px;
 }
+
+.opaque{
+  background-color: rgba(241, 238, 208, 0.5);
+}
