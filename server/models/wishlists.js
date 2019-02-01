@@ -11,7 +11,7 @@ var wishlists = [{
   },
   {
     "username": "thesofakillers",
-    "wishes": ['test', 'you', 'bye']
+    "wishes": ['A', 'first', 'please']
   }
 ];
 
