@@ -97,3 +97,7 @@ ul{
 .opaque{
   background-color: rgba(241, 238, 208, 0.5);
 }
+
+.very-small{
+  font-size: 8pt;
+}

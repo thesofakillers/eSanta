@@ -32,8 +32,8 @@ $(document).ready(function() {
         // assign response to a variable
         var people = response;
         // populate empty table from above with people in /people
+        var tableBody = $("#mainDynamic tbody")
         people.forEach(person => {
-          var tableBody = $("#mainDynamic tbody")
           tableBody.append("\
           <tr>\
             <td width='34%' class='people model clickable pl-4 pr-0'>" + person.username + "</td>\
