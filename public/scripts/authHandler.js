@@ -1,4 +1,101 @@
 /*
+  Handles the rendering of the Login form and parses the inputted data to
+  server.
+  Will also redirect user depending on success or failure
+*/
+function handleLoginForm(fromRegister, fromFailure){
+  mainEl = $("#mainDynamic")
+  // render login form
+  mainEl.html("\
+  <form id='loginSubmit'>\
+    <div class='form-group pt-3'>\
+      <label for='Username'>Username</label>\
+      <input type='text' class='form-control' id='loginUsername' placeholder='username' required>\
+    <div class='form-group pt-3'>\
+        <label for='Password'>Password</label>\
+        <input type='password' class='form-control' id='loginPassword' placeholder='password' required>\
+    </div>\
+    <button class='btn btn-primary type='submit'>Login</button>\
+  </form>\
+  ");
+
+  // add succesful registration message if user reached page from /register
+  if (fromRegister){
+    mainEl.prepend("\
+    <div class='alert alert-success alert-dismissible fade show' role='alert'>\
+      Succesfully registered. Feel free to sign in\
+      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+        <span aria-hidden='true'>&times;</span>\
+      </button>\
+    </div>\
+    ")
+  };
+
+  // add error message if the user credentials are invalid
+  if (fromFailure){
+    mainEl.prepend("\
+    <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
+      There was an error logging you in. Please check your credentials\
+      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+        <span aria-hidden='true'>&times;</span>\
+      </button>\
+    </div>\
+    ")
+  };
+
+  // handle form submission
+  mainEl.on('submit', '#loginSubmit', function(){
+    // prevent page reload
+    event.preventDefault();
+
+    // parse entered data
+    var usernameSubmitted = $('#loginUsername').val()
+    var passwordSubmitted = $('#loginPassword').val()
+
+    // send AJAX POST request
+    $.ajax({
+      url: "/login",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({
+        username: usernameSubmitted,
+        password: passwordSubmitted
+      }),
+      statusCode:{
+        // handles succesful login
+        200: function(response){
+          console.log(response.message);
+          //store JWT token received from server
+          localStorage.setItem('Authorization', ('Bearer '+response.token))
+          //set loggedIn boolean in system
+          localStorage.setItem('loggedIn', true);
+          // render logout rather than login/register
+          var token = localStorage.getItem('Authorization')
+          checkIfLoggedIn(token);
+          // render home page
+          $('.logo.clickable').trigger('click')
+          // give login success message
+          mainEl.prepend("\
+          <div class='alert alert-success alert-dismissible fade show' role='alert'>\
+            You are now logged in.\
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+              <span aria-hidden='true'>&times;</span>\
+            </button>\
+          </div>\
+          ")
+        },
+        400: function(){
+          // in case of error
+          // let user try again
+          handleLoginForm(false, true);
+        }
+      }
+    });
+  });
+}
+
+
+/*
   Given the current JWTObject, checks whether the user is logged in
   Renders the Login/Register/Logout area accordingly
 */
@@ -51,23 +148,23 @@ function handleRegisterForm(mainEl, errorBoolean) {
     <div class='form-row'>\
       <div class='col'>\
         <label for='Forename'>Forename</label>\
-        <input type='text' class='form-control' id='Forename' placeholder='Forename' required>\
+        <input type='text' class='form-control' id='registerForename' placeholder='Forename' required>\
       </div>\
       <div class='col'>\
         <label for='Surname'>Surname</label>\
-        <input type='text' class='form-control' id='Surname' placeholder='Surname' required>\
+        <input type='text' class='form-control' id='registerSurname' placeholder='Surname' required>\
       </div>\
     </div>\
     <div class='form-group pt-3'>\
       <label for='Username'>Username</label>\
-      <input type='text' class='form-control' id='Username' placeholder='username' required>\
+      <input type='text' class='form-control' id='registerUsername' placeholder='username' required>\
     <div class='form-group pt-3'>\
         <label for='Password'>Password</label>\
-        <input type='password' class='form-control' id='Password' placeholder='password' required>\
+        <input type='password' class='form-control' id='registerPassword' placeholder='password' required>\
     </div>\
     <div class='form-group pt-3'>\
       <div class='form-check'>\
-        <input class='form-check-input' type='checkbox' id='admin'>\
+        <input class='form-check-input' type='checkbox' id='registerAdmin'>\
         <label class='form-check-label' for='admin'>\
           I am one of Santa's elves\
         </label>\
@@ -76,25 +173,17 @@ function handleRegisterForm(mainEl, errorBoolean) {
     <button class='btn btn-primary type='submit'>Register</button>\
   </form>\
     ")
-  if (errorBoolean) {
-    mainEl.prepend("\
-    <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
-      There was an error. The username submitted may be already taken\
-      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
-        <span aria-hidden='true'>&times;</span>\
-      </button>\
-    </div>\
-    ")
-  }
-  mainEl.on('submit', '#registerSubmit', function() {
+
+  mainEl.on('submit', '#registerSubmit', function(e) {
     // prevemt page reload
-    event.preventDefault();
+    e.preventDefault();
+    e.stopImmediatePropagation();
     // parse form
-    var forenameSubmitted = $('#Forename').val()
-    var surnameSubmitted = $('#Surname').val()
-    var usernameSubmitted = $('#Username').val()
-    var passwordSubmitted = $('#Password').val()
-    var admin = $('#admin').is(":checked") ? "concertina" : false;
+    var forenameSubmitted = $('#registerForename').val()
+    var surnameSubmitted = $('#registerSurname').val()
+    var usernameSubmitted = $('#registerUsername').val()
+    var passwordSubmitted = $('#registerPassword').val()
+    var admin = ($('#registerAdmin').is(":checked") ? "concertina" : false);
 
     $.ajax({
       url: '/register',
@@ -109,111 +198,23 @@ function handleRegisterForm(mainEl, errorBoolean) {
       }),
       statusCode: {
         200: function(response) {
-          handleLoginForm(mainEl, true, false)
+          handleLoginForm(true, false);
         },
         400: function() {
-          handleRegisterForm(mainEl, true);
-        },
-        500: function() {
-          mainEl.html("\
-          <h1>Internal Server Error</h1>\
-          <p class='text-justify pt-3'>There was an error encrypting your \
-          password, please try again later</p>")
-        }
-      }
-    });
-  });
-}
-
-/*
-  Handles the rendering of the Login form and parses the inputted data to
-  server.
-  Will also redirect user depending on success or failure
-*/
-function handleLoginForm(mainEl, fromRegister, fromFailure){
-  // render login form
-  mainEl.html("\
-  <form id='loginSubmit'>\
-    <div class='form-group pt-3'>\
-      <label for='Username'>Username</label>\
-      <input type='text' class='form-control' id='Username' placeholder='username' required>\
-    <div class='form-group pt-3'>\
-        <label for='Password'>Password</label>\
-        <input type='password' class='form-control' id='Password' placeholder='password' required>\
-    </div>\
-    <button class='btn btn-primary type='submit'>Login</button>\
-  </form>\
-  ");
-
-  // add succesful registration message if user reached page from /register
-  if (fromRegister){
-    mainEl.prepend("\
-    <div class='alert alert-success alert-dismissible fade show' role='alert'>\
-      Succesfully registered. Feel free to sign in\
-      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
-        <span aria-hidden='true'>&times;</span>\
-      </button>\
-    </div>\
-    ")
-  };
-
-  // add error message if the user credentials are invalid
-  if (fromFailure){
-    mainEl.prepend("\
-    <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
-      There was an error logging you in. Please check your credentials\
-      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
-        <span aria-hidden='true'>&times;</span>\
-      </button>\
-    </div>\
-    ")
-  };
-
-  // handle form submission
-  mainEl.on('submit', '#loginSubmit', function(){
-    // prevent page reload
-    event.preventDefault();
-
-    // parse entered data
-    var usernameSubmitted = $('#Username').val()
-    var passwordSubmitted = $('#Password').val()
-
-    // send AJAX POST request
-    $.ajax({
-      url: "/login",
-      method: "POST",
-      contentType: "application/json",
-      data: JSON.stringify({
-        username: usernameSubmitted,
-        password: passwordSubmitted
-      }),
-      statusCode:{
-        // handles succesful login
-        200: function(response){
-          console.log(response.message);
-          //store JWT token received from server
-          localStorage.setItem('Authorization', ('Bearer '+response.token))
-          //set loggedIn boolean in system
-          localStorage.setItem('loggedIn', true);
-          // render logout rather than login/register
-          var token = localStorage.getItem('Authorization')
-          checkIfLoggedIn(token);
-          // render home page
-          $('.logo.clickable').trigger('click')
-          // give login success message
           mainEl.prepend("\
-          <div class='alert alert-success alert-dismissible fade show' role='alert'>\
-            You are now logged in.\
+          <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
+            There was an error. The username submitted may be already taken\
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
               <span aria-hidden='true'>&times;</span>\
             </button>\
           </div>\
           ")
         },
-        400: function(){
-          // in case of error
-          // let user try again
-          handleLoginForm(mainEl, false, true);
+        500: function() {
+          mainEl.html("\
+          <h1>Internal Server Error</h1>\
+          <p class='text-justify pt-3'>There was an error encrypting your \
+          password, please try again later</p>")
         }
       }
     });
@@ -256,7 +257,7 @@ $(document).ready(function() {
 
   // handle logging in
   authAreaEl.on('click', '.clickable#loginPointer', function() {
-    handleLoginForm(main, false, false)
+    handleLoginForm(false, false)
   });
 
   // handle logging out
