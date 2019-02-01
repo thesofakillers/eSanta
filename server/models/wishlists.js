@@ -1,13 +1,18 @@
 // wishlist data (done in memory)
 
 var wishlists = [{
-  "username": "doctorwhocomposer",
-  "wishes": ["Telephone Booth", "Signal Generator",
-    "Synthesizer", "Turntable", "Drum Machine",
-    "Roland TR-808", "Yamaha DX7", "Tape Recorder",
-    "Violin", "Dr. Who Box Set", "K9 model",
-    "Headphones", "Amps"
-  ]
-}];
+    "username": "doctorwhocomposer",
+    "wishes": ["Telephone Booth", "Signal Generator",
+      "Synthesizer", "Turntable", "Drum Machine",
+      "Roland TR-808", "Yamaha DX7", "Tape Recorder",
+      "Violin", "Dr. Who Box Set", "K9 model",
+      "Headphones", "Amps"
+    ]
+  },
+  {
+    "username": "thesofakillers",
+    "wishes": ['test', 'you', 'bye']
+  }
+];
 
 module.exports = wishlists;

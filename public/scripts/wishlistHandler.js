@@ -127,8 +127,130 @@ function displayWishlist(mainEl, wishlistJSON, ofOwnerBool) {
   };
 }
 
+function editWishlist(mainEl, wishlistJSON) {
+  mainEl.html("\
+  <h4>What would <span class='font-italic'>you</span> like for Christmas?</h4>\
+  <form class='opaque', id ='wishlistForm'>\
+  </form>\
+  ")
+  wishlistForm = $('#wishlistForm');
 
-function getOwnWishlist(mainEl, user, userToken){
+  var wishes = wishlistJSON.wishes;
+
+  wishes.forEach(wish => {
+    wishlistForm.append("<div class='form-row p-2 wishEntry'>\
+      <div class='col-10'>\
+        <input type='text' class='form-control wishEntryInput' \
+        placeholder='wish' value='" + wish + "' required>\
+      </div>\
+      <div class='col-2'>\
+        <button type='button' class='btn btn-danger removeEntryButton'>-</button>\
+      </div>\
+    </div>\
+    ")
+  });
+  wishlistForm.append("<div class='form-row p-2 expandableRow'>\
+    <div class = col-1></div>\
+    <div class='col-8'>\
+      <button type='submit' class='btn btn-primary'>Submit Changes</button>\
+    </div>\
+    <div class = col-1></div>\
+    <div class='col-2'>\
+      <button type='button' class='btn btn-success addEntryButton'>+</button>\
+    </div>\
+  </div>\
+  ")
+
+  var formBasis = ("\
+    <div class='form-row p-2 wishEntry'>\
+      <div class='col-10'>\
+        <input type='text' class='form-control wishEntryInput' placeholder='wish' required>\
+      </div>\
+      <div class='col-2'>\
+        <button type='button' class='btn btn-danger removeEntryButton'>-</button>\
+      </div>\
+    </div>\
+    <div class='form-row p-2 expandableRow'>\
+      <div class = col-1></div>\
+      <div class='col-8'>\
+        <button type='submit' class='btn btn-primary'>Submit Changes</button>\
+      </div>\
+      <div class = col-1></div>\
+      <div class='col-2'>\
+        <button type='button' class='btn btn-success addEntryButton'>+</button>\
+      </div>\
+    </div>\
+  ")
+
+  wishlistForm.on('click', '.removeEntryButton', function() {
+    $(this).parent().parent().remove();
+  });
+
+  wishlistForm.on('click', '.addEntryButton', function() {
+    $(this).parent().parent().replaceWith(formBasis);
+  });
+
+  wishlistForm.on('submit', function() {
+    event.preventDefault();
+    var submittedWishes = [];
+    $('.wishEntryInput').each(function() {
+      submittedWishes.push($(this).val())
+    });
+
+    var currToken = localStorage.getItem('Authorization')
+    $.ajax({
+      url: '/wishlists/' + wishlistJSON.username,
+      method: 'PUT',
+      contentType: 'application/json',
+      headers: {
+        Authorization: currToken
+      },
+      data: JSON.stringify({
+        wishes: submittedWishes
+      }),
+      statusCode: {
+        400: function(response) {
+          console.log(response)
+          $('.logo.clickable').trigger('click');
+          mainEl.prepend("\
+                <div class='alert alert-warning alert-dismissible fade show' role='alert'>\
+                  Wishlist not edited. You didn't have one to start with!\
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+                    <span aria-hidden='true'>&times;</span>\
+                  </button>\
+                </div>\
+                ");
+        },
+        403: function(response) {
+          console.log(response)
+          $('.logo.clickable').trigger('click');
+          mainEl.prepend("\
+                <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
+                  Wishlist edit failed. You are not authorized!\
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+                    <span aria-hidden='true'>&times;</span>\
+                  </button>\
+                </div>\
+                ");
+        },
+        200: function(response) {
+          console.log(response)
+          $('.logo.clickable').trigger('click');
+          mainEl.prepend("\
+                <div class='alert alert-success alert-dismissible fade show' role='alert'>\
+                  Wishlist edited.\
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+                    <span aria-hidden='true'>&times;</span>\
+                  </button>\
+                </div>\
+                ");
+        }
+      }
+    });
+  });
+}
+
+function getOwnWishlist(mainEl, user, userToken, editMode) {
   $.ajax({
     url: "/wishlists/" + user,
     contentType: 'application/json',
@@ -151,7 +273,11 @@ function getOwnWishlist(mainEl, user, userToken){
         createWishlist(mainEl, user)
       },
       200: function(response) {
-        displayWishlist(mainEl, response, true)
+        if (editMode) {
+          editWishlist(mainEl, response)
+        } else {
+          displayWishlist(mainEl, response, true)
+        };
       }
     }
   })
@@ -187,11 +313,12 @@ $(document).ready(function() {
   body.on('click', ".clickable.ownWishlist", function() {
     var currToken = localStorage.getItem('Authorization')
     var decodedCurrToken = jwt_decode(currToken.split(' ')[1]);
-    getOwnWishlist(main, decodedCurrToken.username, currToken)
+    getOwnWishlist(main, decodedCurrToken.username, currToken, false)
   });
 
   main.on('click', ".editWishlist", function() {
     var currToken = localStorage.getItem('Authorization')
-    editWishlist(currToken, )
+    var decodedCurrToken = jwt_decode(currToken.split(' ')[1]);
+    getOwnWishlist(main, decodedCurrToken.username, currToken, true)
   });
 });
