@@ -1,4 +1,8 @@
+/*
+  handles wishlist creation
+*/
 function createWishlist(mainEl) {
+  // core of the wishlist form
   var formBasis = "\
     <div class='form-row p-2 wishEntry'>\
       <div class='col-10'>\
@@ -19,6 +23,7 @@ function createWishlist(mainEl) {
       </div>\
     </div>\
   "
+  // wishlist form container
   mainEl.html("\
   <h4>What would <span class='font-italic'>you</span> like for Christmas?</h4>\
   <form class='opaque', id ='wishlistForm'>\
@@ -26,24 +31,33 @@ function createWishlist(mainEl) {
   </form>\
   ")
 
+  // target wishlist form
   wishlistForm = $('#wishlistForm')
 
+  // define delete button
   wishlistForm.on('click', '.removeEntryButton', function() {
     $(this).parent().parent().remove();
   });
 
+  // define add button
   wishlistForm.on('click', '.addEntryButton', function() {
     $(this).parent().parent().replaceWith(formBasis);
   });
 
+  // define what to do on submit
   wishlistForm.on('submit', function() {
     event.preventDefault();
+    // initialize empty list
     var submittedWishes = [];
     $('.wishEntryInput').each(function() {
+      // populate submittedWishes
       submittedWishes.push($(this).val())
     });
 
+    // get JWTtoken
     var currToken = localStorage.getItem('Authorization')
+
+    // POST wishlist
     $.ajax({
       url: '/wishlists',
       method: 'POST',
@@ -127,16 +141,23 @@ function displayWishlist(mainEl, wishlistJSON, ofOwnerBool) {
   };
 }
 
+/*
+  handles wishlist editing
+*/
 function editWishlist(mainEl, wishlistJSON) {
+  // initialize editor container
   mainEl.html("\
   <h4>What would <span class='font-italic'>you</span> like for Christmas?</h4>\
   <form class='opaque', id ='wishlistForm'>\
   </form>\
   ")
+  // target the form
   wishlistForm = $('#wishlistForm');
 
+  // parse user's current wishes
   var wishes = wishlistJSON.wishes;
 
+  // render user's current wishes on form
   wishes.forEach(wish => {
     wishlistForm.append("<div class='form-row p-2 wishEntry'>\
       <div class='col-10'>\
@@ -149,6 +170,8 @@ function editWishlist(mainEl, wishlistJSON) {
     </div>\
     ")
   });
+
+  // append submit and add buttons
   wishlistForm.append("<div class='form-row p-2 expandableRow'>\
     <div class = col-1></div>\
     <div class='col-8'>\
@@ -161,6 +184,7 @@ function editWishlist(mainEl, wishlistJSON) {
   </div>\
   ")
 
+  // form core
   var formBasis = ("\
     <div class='form-row p-2 wishEntry'>\
       <div class='col-10'>\
@@ -182,6 +206,8 @@ function editWishlist(mainEl, wishlistJSON) {
     </div>\
   ")
 
+
+  // see createwishlist for below
   wishlistForm.on('click', '.removeEntryButton', function() {
     $(this).parent().parent().remove();
   });
@@ -197,6 +223,7 @@ function editWishlist(mainEl, wishlistJSON) {
       submittedWishes.push($(this).val())
     });
 
+    // edit user's wishlist
     var currToken = localStorage.getItem('Authorization')
     $.ajax({
       url: '/wishlists/' + wishlistJSON.username,
@@ -250,7 +277,12 @@ function editWishlist(mainEl, wishlistJSON) {
   });
 }
 
+
+/*
+  handles requests when a user asks to interact with their own wishlist
+*/
 function getOwnWishlist(mainEl, user, userToken, editMode) {
+  // GET request for wishlist of the user
   $.ajax({
     url: "/wishlists/" + user,
     contentType: 'application/json',
@@ -284,12 +316,16 @@ function getOwnWishlist(mainEl, user, userToken, editMode) {
 }
 
 $(document).ready(function() {
-
+  // targeting useful elements
   main = $("#mainDynamic")
   body = $('body')
+  // what to do when a user's wishlist is clicked on
   main.on('click', ".userWishlist.clickable", function() {
+    // get current token
     var currToken = localStorage.getItem('Authorization')
+    // determine whose wishlist we are asking for
     var userRequested = $(this).data('username')
+    // send get request for this wishlist
     $.ajax({
       url: "/wishlists/" + userRequested,
       contentType: 'application/json',
@@ -309,13 +345,13 @@ $(document).ready(function() {
       }
     })
   });
-
+  // what to do when an ownwishlist class is clicked
   body.on('click', ".clickable.ownWishlist", function() {
     var currToken = localStorage.getItem('Authorization')
     var decodedCurrToken = jwt_decode(currToken.split(' ')[1]);
     getOwnWishlist(main, decodedCurrToken.username, currToken, false)
   });
-
+  // what to do when the edit wishlist button is clicked
   main.on('click', ".editWishlist", function() {
     var currToken = localStorage.getItem('Authorization')
     var decodedCurrToken = jwt_decode(currToken.split(' ')[1]);
