@@ -128,6 +128,35 @@ function displayWishlist(mainEl, wishlistJSON, ofOwnerBool) {
 }
 
 
+function getOwnWishlist(mainEl, user, userToken){
+  $.ajax({
+    url: "/wishlists/" + user,
+    contentType: 'application/json',
+    headers: {
+      Authorization: userToken
+    },
+    statusCode: {
+      403: function(response) {
+        console.log(response.responseJSON.message)
+        mainEl.prepend("\
+        <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
+        It seems you are not signed in!\
+        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+        <span aria-hidden='true'>&times;</span>\
+        </button>\
+        </div>\
+        ")
+      },
+      400: function(response) {
+        createWishlist(mainEl, user)
+      },
+      200: function(response) {
+        displayWishlist(mainEl, response, true)
+      }
+    }
+  })
+}
+
 $(document).ready(function() {
 
   main = $("#mainDynamic")
@@ -158,34 +187,11 @@ $(document).ready(function() {
   body.on('click', ".clickable.ownWishlist", function() {
     var currToken = localStorage.getItem('Authorization')
     var decodedCurrToken = jwt_decode(currToken.split(' ')[1]);
-    var currentUser = decodedCurrToken.username
-    $.ajax({
-      url: "/wishlists/" + currentUser,
-      contentType: 'application/json',
-      headers: {
-        Authorization: currToken
-      },
-      statusCode: {
-        403: function(response) {
-          console.log(response.responseJSON.message)
-          main.prepend("\
-          <div class='alert alert-danger alert-dismissible fade show' role='alert'>\
-          It seems you are not signed in!\
-          <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
-          <span aria-hidden='true'>&times;</span>\
-          </button>\
-          </div>\
-          ")
-        },
-        400: function(response) {
-          createWishlist(main, currentUser)
-        },
-        200: function(response) {
-          displayWishlist(main, response, true)
-        }
-      }
-    })
+    getOwnWishlist(main, decodedCurrToken.username, currToken)
+  });
 
-  })
-
+  main.on('click', ".editWishlist", function() {
+    var currToken = localStorage.getItem('Authorization')
+    editWishlist(currToken, )
+  });
 });
