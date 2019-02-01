@@ -333,6 +333,17 @@ $(document).ready(function() {
         Authorization: currToken
       },
       statusCode: {
+        400: function(response) {
+          console.log(response);
+          main.prepend("\
+                <div class='alert alert-warning alert-dismissible fade show' role='alert'>\
+                  User doesn't have a wishlist!\
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+                    <span aria-hidden='true'>&times;</span>\
+                  </button>\
+                </div>\
+          ");
+        },
         403: function() {
           main.html("\
           <h1>You are not authorized</h1>\
