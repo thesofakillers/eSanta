@@ -51,7 +51,7 @@ function handleRegisterForm(mainEl, errorBoolean) {
     <div class='form-row'>\
       <div class='col'>\
         <label for='Forename'>Forename</label>\
-        <input type='text' class='form-control' id='Forename' placeholder='Forname' required>\
+        <input type='text' class='form-control' id='Forename' placeholder='Forename' required>\
       </div>\
       <div class='col'>\
         <label for='Surname'>Surname</label>\
