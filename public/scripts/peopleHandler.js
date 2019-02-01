@@ -151,7 +151,7 @@ $(document).ready(function() {
   });
 
   // when a naughtPost is clicked
-  main.on('click', '.naughtyPost', function() {
+  $('body').on('click', '.naughtyPost', function() {
     renderNaughtyPost(main)
   });
 
